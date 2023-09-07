@@ -42,22 +42,85 @@ export default function Card({ item }) {
   };
 
   const renderTypes = () => {
-    // Ambil maksimal 2 tipe
-
     return typesPoke.map((type, index) => (
       <View
         key={index}
         style={styles.typeContainer}>
-        <Text style={styles.typeText}>{type.type.name}</Text>
+        <Text style={styles.typeText}>{type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}</Text>
       </View>
     ));
   };
+
+  const backgroundColor = () => {
+    if (typesPoke.length > 0) {
+      const typeName = typesPoke[0].type.name;
+      switch (typeName) {
+        case "grass":
+          return "#48CFB2";
+        case "fire":
+          return "#FA6C6C";
+        case "water":
+          return "#6890F0";
+        case "bug":
+          return "#A8B820";
+        case "normal":
+          return "#A8A878";
+      }
+    }
+  };
+
+  const styles = StyleSheet.create({
+    cardWrapper: {
+      margin: 5,
+    },
+    card: {
+      flex: 1,
+      height: 110,
+      width: 165,
+      borderRadius: 15,
+      backgroundColor: backgroundColor(),
+    },
+    image: {
+      position: "absolute",
+      right: 2,
+      bottom: 5,
+      height: 85,
+      width: 80,
+    },
+    name: {
+      fontWeight: "bold",
+      color: "#fff",
+      fontSize: 15,
+      marginTop: 25,
+      marginLeft: 10,
+    },
+    typesWrapper: {
+      flexDirection: "column",
+      justifyContent: "left",
+      alignItems: "flex-start",
+      marginTop: 5,
+      marginLeft: 5,
+    },
+    typeContainer: {
+      backgroundColor: backgroundColor(),
+      borderRadius: 15,
+      margin: 5,
+      paddingHorizontal: 8,
+      elevation: 5
+    },
+    typeText: {
+      color: "#fff",
+      fontSize: 12,
+    },
+  });
 
   return (
     <View style={styles.cardWrapper}>
       <TouchableWithoutFeedback onPress={handleCardPress}>
         <View style={styles.card}>
-          <Text style={styles.name}>{item.item.name.charAt(0).toUpperCase() + item.item.name.slice(1)}</Text>
+          <Text style={styles.name}>
+            {item.item.name.charAt(0).toUpperCase() + item.item.name.slice(1)}
+          </Text>
           <View style={styles.typesWrapper}>{renderTypes()}</View>
           <Image
             source={{ uri: data }}
@@ -68,45 +131,3 @@ export default function Card({ item }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  cardWrapper: {
-    margin: 5,
-  },
-  card: {
-    flex: 1,
-    height: 150,
-    width: 175,
-    borderRadius: 15,
-    padding: 8,
-    backgroundColor: "green",
-  },
-  image: {
-    position: "absolute",
-    right: 2,
-    bottom: 5,
-    height: 110,
-    width: 110,
-  },
-  name: {
-    fontWeight: "bold",
-    color: "#fff",
-    fontSize: 12,
-    marginTop: 25,
-  },
-  typesWrapper: {
-    flexDirection: "column",
-    justifyContent: "left",
-    alignItems: "flex-start",
-    marginTop: 5
-  },
-  typeContainer: {
-    backgroundColor: "red",
-    borderRadius: 15,
-    margin: 5,
-    paddingHorizontal: 8,
-  },
-  typeText: {
-    color: "#fff",
-  },
-});

@@ -50,7 +50,7 @@ export default function Home() {
       <FlatList
         data={datas}
         renderItem={(ite) => <Card item={ite} />}
-        contentContainerStyle={styles.container}
+        style={styles.container}
         keyExtractor={(item) => item.id}
         numColumns={2}
       />
@@ -59,13 +59,14 @@ export default function Home() {
 }
 const styles = StyleSheet.create({
   container: {
-    top: 15,
+    marginHorizontal: 10,
   },
   title: {
     fontSize: 35,
     fontWeight: "bold",
     textAlign: "left",
-    marginTop: 20,
-    marginBottom:20
+    marginTop: 30,
+    marginBottom: 20,
+    marginHorizontal: 15
   },
 });
