@@ -16,7 +16,7 @@ export default function Home() {
 
   useEffect(() => {
     //fetch data
-    fetch("https://pokeapi.co/api/v2/pokemon")
+    fetch("https://pokeapi.co/api/v2/pokemon?limit=12")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not OK");
