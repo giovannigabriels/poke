@@ -6,17 +6,22 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import Bar from "../components/Bar";
 import RenderTypes from "../components/RenderTypes";
 import capitalizeFirstLetter from "../utils/capitalize";
+import kgToLbs from "../utils/convertKgToLbs";
 import formattedNumber from "../utils/formattedNumber";
 import backgroundColor from "../utils/getBackGroundColor";
+import meterToFeetAndInches from "../utils/meterToFeetAndInch";
 
 export default function Detail({ route }) {
-  const { id, data, typesPoke, name, stats ,abilities} = route.params;
+  const { id, data, typesPoke, name, stats, abilities, weight, height } =
+    route.params;
   const [hp, setHp] = useState(null);
   const [atk, setAtk] = useState(null);
   const [def, setDef] = useState(null);
   const [sp_atk, setSpAtk] = useState(null);
   const [sp_def, setSpDef] = useState(null);
-  const [abi, setAbilities] = useState(null)
+  const [abi, setAbilities] = useState(null);
+  const [weightLbs, setWeightLbs] = useState(null);
+  const [heightFeet, setHeightFeet] = useState(null);
 
   useEffect(() => {
     for (const iterator of stats) {
@@ -32,11 +37,14 @@ export default function Detail({ route }) {
         setSpDef(iterator.base_stat);
       }
     }
-    capitalizeFirstLetter
-    const mapAbilities = abilities.map((el)=>{
-      return capitalizeFirstLetter(el.ability.name)
-    }).join(", ")
-    setAbilities(mapAbilities)
+    const mapAbilities = abilities
+      .map((el) => {
+        return capitalizeFirstLetter(el.ability.name);
+      })
+      .join(", ");
+    setAbilities(mapAbilities);
+    setWeightLbs(kgToLbs(weight));
+    setHeightFeet(meterToFeetAndInches(height));
   }, []);
 
   const [index, setIndex] = useState(0);
@@ -53,11 +61,13 @@ export default function Detail({ route }) {
       </View>
       <View style={styles.about}>
         <Text style={styles.titleAbout}>Height</Text>
-        <Text style={styles.valueAbout}>2 3.6 (0.70cm)</Text>
+        <Text style={styles.valueAbout}>{heightFeet} ({height} m)</Text>
       </View>
       <View style={styles.about}>
         <Text style={styles.titleAbout}>Weight</Text>
-        <Text style={styles.valueAbout}>15.2 lbs (6.9 kg)</Text>
+        <Text style={styles.valueAbout}>
+          {weightLbs} lbs ({weight}kg)
+        </Text>
       </View>
       <View style={styles.about}>
         <Text style={styles.titleAbout}>Abilities</Text>
