@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-export default function Card({ item }) {
+export default function Card({ item}) {
   const navigation = useNavigation();
   const [data, setData] = useState("");
   const [typesPoke, setTypes] = useState([]);
@@ -37,7 +37,7 @@ export default function Card({ item }) {
 
   const handleCardPress = () => {
     navigation.navigate("Detail", {
-      itemId: item.item.id,
+      id: item.index +1,
     });
   };
 
@@ -74,18 +74,19 @@ export default function Card({ item }) {
       margin: 5,
     },
     card: {
-      flex: 1,
-      height: 110,
+      flexDirection:"column",
+      height: 120,
       width: 165,
       borderRadius: 15,
       backgroundColor: backgroundColor(),
     },
     image: {
+        flex:1,
       position: "absolute",
       right: 2,
       bottom: 5,
-      height: 85,
-      width: 80,
+      height: 80,
+      width: 75,
     },
     name: {
       fontWeight: "bold",
@@ -118,11 +119,13 @@ export default function Card({ item }) {
     <View style={styles.cardWrapper}>
       <TouchableWithoutFeedback onPress={handleCardPress}>
         <View style={styles.card}>
+         <View style={{flex:1}}>
           <Text style={styles.name}>
             {item.item.name.charAt(0).toUpperCase() + item.item.name.slice(1)}
           </Text>
           <View style={styles.typesWrapper}>{renderTypes()}</View>
-          <Image
+          </View>
+         <Image
             source={{ uri: data }}
             style={styles.image}
           />
