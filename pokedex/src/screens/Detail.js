@@ -5,16 +5,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import Bar from "../components/Bar";
 import RenderTypes from "../components/RenderTypes";
+import capitalizeFirstLetter from "../utils/capitalize";
 import formattedNumber from "../utils/formattedNumber";
 import backgroundColor from "../utils/getBackGroundColor";
 
 export default function Detail({ route }) {
-  const { id, data, typesPoke, name, stats } = route.params;
+  const { id, data, typesPoke, name, stats ,abilities} = route.params;
   const [hp, setHp] = useState(null);
   const [atk, setAtk] = useState(null);
   const [def, setDef] = useState(null);
   const [sp_atk, setSpAtk] = useState(null);
   const [sp_def, setSpDef] = useState(null);
+  const [abi, setAbilities] = useState(null)
 
   useEffect(() => {
     for (const iterator of stats) {
@@ -30,6 +32,11 @@ export default function Detail({ route }) {
         setSpDef(iterator.base_stat);
       }
     }
+    capitalizeFirstLetter
+    const mapAbilities = abilities.map((el)=>{
+      return capitalizeFirstLetter(el.ability.name)
+    }).join(", ")
+    setAbilities(mapAbilities)
   }, []);
 
   const [index, setIndex] = useState(0);
@@ -54,7 +61,7 @@ export default function Detail({ route }) {
       </View>
       <View style={styles.about}>
         <Text style={styles.titleAbout}>Abilities</Text>
-        <Text style={styles.valueAbout}>Overgrow, Chlorophyl</Text>
+        <Text style={styles.valueAbout}>{abi}</Text>
       </View>
     </View>
   );
@@ -143,7 +150,7 @@ export default function Detail({ route }) {
               marginHorizontal: 20,
             }}>
             <View style={{ flexDirection: "column" }}>
-              <Text style={{ color: "white", marginLeft: 5, fontSize: 45}}>
+              <Text style={{ color: "white", marginLeft: 5, fontSize: 45 }}>
                 {name}
               </Text>
               <View style={{ flexDirection: "row", alignSelf: "flex-start" }}>
@@ -151,7 +158,9 @@ export default function Detail({ route }) {
               </View>
             </View>
             <View>
-              <Text style={{ color: "white", fontSize: 20 }}>#{formattedNumber(id)}</Text>
+              <Text style={{ color: "white", fontSize: 20 }}>
+                #{formattedNumber(id)}
+              </Text>
             </View>
           </View>
           <View style={{ flex: 1 }}>
@@ -182,7 +191,11 @@ export default function Detail({ route }) {
                   borderBottomColor: "blue",
                   borderBottomWidth: 2,
                 }}
-                style={{ backgroundColor: "white", shadowOpacity: 3,width:"auto",}}
+                style={{
+                  backgroundColor: "white",
+                  shadowOpacity: 3,
+                  width: "auto",
+                }}
               />
             )}
           />
