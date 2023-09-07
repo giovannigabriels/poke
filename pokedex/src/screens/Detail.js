@@ -3,6 +3,7 @@ import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import Bar from "../components/Bar";
 
 export default function Detail({ route }) {
   const { id } = route.params;
@@ -17,14 +18,63 @@ export default function Detail({ route }) {
   };
 
   const AboutRoute = () => (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>About</Text>
+    <View style={styles.content}>
+      <View style={styles.about}>
+        <Text style={styles.titleAbout}>Species</Text>
+        <Text style={styles.valueAbout}>Seed</Text>
+      </View>
+      <View style={styles.about}>
+        <Text style={styles.titleAbout}>Height</Text>
+        <Text style={styles.valueAbout}>2 3.6 (0.70cm)</Text>
+      </View>
+      <View style={styles.about}>
+        <Text style={styles.titleAbout}>Weight</Text>
+        <Text style={styles.valueAbout}>15.2 lbs (6.9 kg)</Text>
+      </View>
+      <View style={styles.about}>
+        <Text style={styles.titleAbout}>Abilities</Text>
+        <Text style={styles.valueAbout}>Overgrow, Chlorophyl</Text>
+      </View>
     </View>
   );
 
   const BaseStatsRoute = () => (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Base Stats</Text>
+    <View style={styles.content}>
+      <View style={styles.about}>
+        <Text style={styles.titleBase}>HP</Text>
+        <Text style={styles.valueBase}>45</Text>
+        <View style={styles.barBaseContainer}>
+          <Bar status={45} />
+        </View>
+      </View>
+      <View style={styles.about}>
+        <Text style={styles.titleBase}>Attack</Text>
+        <Text style={styles.valueBase}>60</Text>
+        <View style={styles.barBaseContainer}>
+        <Bar status={60} />
+        </View>
+      </View>
+      <View style={styles.about}>
+        <Text style={styles.titleBase}>Defense</Text>
+        <Text style={styles.valueBase}>48</Text>
+        <View style={styles.barBaseContainer}>
+        <Bar status={48} />
+        </View>
+      </View>
+      <View style={styles.about}>
+        <Text style={styles.titleBase}>Sp. Atk</Text>
+        <Text style={styles.valueBase}>65</Text>
+        <View style={styles.barBaseContainer}>
+        <Bar status={65} />
+        </View>
+      </View>
+      <View style={styles.about}>
+        <Text style={styles.titleBase}>Sp. Def</Text>
+        <Text style={styles.valueBase}>65</Text>
+        <View style={styles.barBaseContainer}>
+        <Bar status={65} />
+        </View>
+      </View>
     </View>
   );
 
@@ -127,6 +177,45 @@ export default function Detail({ route }) {
 }
 
 const styles = StyleSheet.create({
+  about: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  titleAbout: {
+    flex: 1,
+    color: "grey",
+  },
+  valueAbout: {
+    flex: 2,
+  },
+  titleBase: {
+    flex: 2,
+    color: "grey",
+  },
+  valueBase: {
+    flex: 1,
+  },
+  barBaseContainer: {
+    flex: 4,
+    width: "100%",
+    height: 5,
+    backgroundColor: "#ccc",
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  barBase: {
+    height: "100%",
+    backgroundColor: "green",
+    width: "65%",
+  },
+  content: {
+    flex: 1,
+    alignItems: "flex-start",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    marginTop: 30,
+  },
   footer: {
     flex: 1,
     backgroundColor: "white",
