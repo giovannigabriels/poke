@@ -4,9 +4,11 @@ import {
   ActivityIndicator,
   StyleSheet,
   Text,
+  ImageBackground,
 } from "react-native";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
   const [datas, setDatas] = useState([]);
@@ -45,16 +47,18 @@ export default function Home() {
   }
 
   return (
-    <View>
-      <Text style={styles.title}>Pokedex</Text>
-      <FlatList
-        data={datas}
-        renderItem={(ite) => <Card item={ite} />}
-        style={styles.container}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-      />
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View>
+        <Text style={styles.title}>Pokedex</Text>
+        <FlatList
+          data={datas}
+          renderItem={(ite) => <Card item={ite} />}
+          style={styles.container}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
@@ -67,6 +71,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
     marginTop: 30,
     marginBottom: 20,
-    marginHorizontal: 15
+    marginHorizontal: 15,
   },
 });
