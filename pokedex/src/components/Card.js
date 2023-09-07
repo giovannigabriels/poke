@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native";
+import capitalizeFirstLetter from "../utils/capitalize";
 import backgroundColor from "../utils/getBackGroundColor";
 import RenderTypes from "./RenderTypes";
 
@@ -16,6 +17,7 @@ export default function Card({ item }) {
   const [data, setData] = useState("");
   const [typesPoke, setTypes] = useState([]);
   const [stats, setStats] = useState([]);
+  const [abilities, setAbilities] = useState([]);
 
   useEffect(() => {
     //fetch data
@@ -30,6 +32,7 @@ export default function Card({ item }) {
         setData(data.sprites.other.home.front_default);
         setTypes(data.types);
         setStats(data.stats);
+        setAbilities(data.abilities)
       })
       .catch((error) => {
         console.error(
@@ -44,8 +47,9 @@ export default function Card({ item }) {
       id: item.index + 1,
       data,
       typesPoke,
-      name: item.item.name.charAt(0).toUpperCase() + item.item.name.slice(1),
+      name:capitalizeFirstLetter(item.item.name),
       stats,
+      abilities
     });
   };
 
@@ -59,7 +63,7 @@ export default function Card({ item }) {
           ]}>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>
-              {item.item.name.charAt(0).toUpperCase() + item.item.name.slice(1)}
+              {capitalizeFirstLetter(item.item.name)}
             </Text>
             <View style={styles.typesWrapper}>
               {RenderTypes(typesPoke, 70, 20)}

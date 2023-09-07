@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
+import capitalizeFirstLetter from "../utils/capitalize";
 import backgroundColor from "../utils/getBackGroundColor";
 
 const RenderTypes = (typesPoke, width, height) => {
@@ -11,7 +12,7 @@ const RenderTypes = (typesPoke, width, height) => {
         { backgroundColor: backgroundColor(typesPoke), width, height },
       ]}>
       <Text style={styles.typeText}>
-        {type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}
+        {capitalizeFirstLetter(type.type.name)}
       </Text>
     </View>
   ));
