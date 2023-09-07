@@ -18,6 +18,8 @@ export default function Card({ item }) {
   const [typesPoke, setTypes] = useState([]);
   const [stats, setStats] = useState([]);
   const [abilities, setAbilities] = useState([]);
+  const [weight, setWeight] = useState(null);
+  const [height, setHeight] = useState(null);
 
   useEffect(() => {
     //fetch data
@@ -32,7 +34,9 @@ export default function Card({ item }) {
         setData(data.sprites.other.home.front_default);
         setTypes(data.types);
         setStats(data.stats);
-        setAbilities(data.abilities)
+        setAbilities(data.abilities);
+        setWeight(data.weight / 10);
+        setHeight(data.height / 10);
       })
       .catch((error) => {
         console.error(
@@ -47,9 +51,11 @@ export default function Card({ item }) {
       id: item.index + 1,
       data,
       typesPoke,
-      name:capitalizeFirstLetter(item.item.name),
+      name: capitalizeFirstLetter(item.item.name),
       stats,
-      abilities
+      abilities,
+      weight,
+      height,
     });
   };
 
