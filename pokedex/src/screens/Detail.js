@@ -4,11 +4,32 @@ import * as Animatable from "react-native-animatable";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import Bar from "../components/Bar";
+import RenderTypes from "../components/RenderTypes";
+import formattedNumber from "../utils/formattedNumber";
+import backgroundColor from "../utils/getBackGroundColor";
 
 export default function Detail({ route }) {
-  const { id } = route.params;
+  const { id, data, typesPoke, name, stats } = route.params;
+  const [hp, setHp] = useState(null);
+  const [atk, setAtk] = useState(null);
+  const [def, setDef] = useState(null);
+  const [sp_atk, setSpAtk] = useState(null);
+  const [sp_def, setSpDef] = useState(null);
+
   useEffect(() => {
-    console.log(id);
+    for (const iterator of stats) {
+      if (iterator.stat.name == "hp") {
+        setHp(iterator.base_stat);
+      } else if (iterator.stat.name == "attack") {
+        setAtk(iterator.base_stat);
+      } else if (iterator.stat.name == "defense") {
+        setDef(iterator.base_stat);
+      } else if (iterator.stat.name == "special-attack") {
+        setSpAtk(iterator.base_stat);
+      } else {
+        setSpDef(iterator.base_stat);
+      }
+    }
   }, []);
 
   const [index, setIndex] = useState(0);
@@ -42,37 +63,37 @@ export default function Detail({ route }) {
     <View style={styles.content}>
       <View style={styles.about}>
         <Text style={styles.titleBase}>HP</Text>
-        <Text style={styles.valueBase}>45</Text>
+        <Text style={styles.valueBase}>{hp}</Text>
         <View style={styles.barBaseContainer}>
-          <Bar status={45} />
+          <Bar status={hp} />
         </View>
       </View>
       <View style={styles.about}>
         <Text style={styles.titleBase}>Attack</Text>
-        <Text style={styles.valueBase}>60</Text>
+        <Text style={styles.valueBase}>{atk}</Text>
         <View style={styles.barBaseContainer}>
-        <Bar status={60} />
+          <Bar status={atk} />
         </View>
       </View>
       <View style={styles.about}>
         <Text style={styles.titleBase}>Defense</Text>
-        <Text style={styles.valueBase}>48</Text>
+        <Text style={styles.valueBase}>{def}</Text>
         <View style={styles.barBaseContainer}>
-        <Bar status={48} />
+          <Bar status={def} />
         </View>
       </View>
       <View style={styles.about}>
         <Text style={styles.titleBase}>Sp. Atk</Text>
-        <Text style={styles.valueBase}>65</Text>
+        <Text style={styles.valueBase}>{sp_atk}</Text>
         <View style={styles.barBaseContainer}>
-        <Bar status={65} />
+          <Bar status={sp_atk} />
         </View>
       </View>
       <View style={styles.about}>
         <Text style={styles.titleBase}>Sp. Def</Text>
-        <Text style={styles.valueBase}>65</Text>
+        <Text style={styles.valueBase}>{sp_def}</Text>
         <View style={styles.barBaseContainer}>
-        <Bar status={65} />
+          <Bar status={sp_def} />
         </View>
       </View>
     </View>
@@ -107,7 +128,11 @@ export default function Detail({ route }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
-        style={{ backgroundColor: "green", flexDirection: "column", flex: 1 }}>
+        style={{
+          backgroundColor: backgroundColor(typesPoke),
+          flexDirection: "column",
+          flex: 1,
+        }}>
         <View style={{ flex: 1, flexDirection: "column" }}>
           <View
             style={{
@@ -118,30 +143,21 @@ export default function Detail({ route }) {
               marginHorizontal: 20,
             }}>
             <View style={{ flexDirection: "column" }}>
-              <Text style={{ color: "red", marginLeft: 5, fontSize: 30 }}>
-                BULBASAUR
+              <Text style={{ color: "white", marginLeft: 5, fontSize: 45}}>
+                {name}
               </Text>
-              <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                <View
-                  // key={index}
-                  style={styles.typeContainer}>
-                  <Text style={styles.typeText}>Grass</Text>
-                </View>
-                <View
-                  // key={index}
-                  style={styles.typeContainer}>
-                  <Text style={styles.typeText}>Grass</Text>
-                </View>
+              <View style={{ flexDirection: "row", alignSelf: "flex-start" }}>
+                {RenderTypes(typesPoke, 75, 30)}
               </View>
             </View>
             <View>
-              <Text style={{ color: "tomato", fontSize: 20 }}>#001</Text>
+              <Text style={{ color: "white", fontSize: 20 }}>#{formattedNumber(id)}</Text>
             </View>
           </View>
           <View style={{ flex: 1 }}>
             <Image
               source={{
-                uri: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
+                uri: data,
               }}
               style={styles.image}
             />
@@ -166,7 +182,7 @@ export default function Detail({ route }) {
                   borderBottomColor: "blue",
                   borderBottomWidth: 2,
                 }}
-                style={{ backgroundColor: "white", shadowOpacity: 3 }}
+                style={{ backgroundColor: "white", shadowOpacity: 3,width:"auto",}}
               />
             )}
           />
@@ -204,11 +220,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: "hidden",
   },
-  barBase: {
-    height: "100%",
-    backgroundColor: "green",
-    width: "65%",
-  },
   content: {
     flex: 1,
     alignItems: "flex-start",
@@ -221,20 +232,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    paddingHorizontal: 40,
-    paddingVertical: 40,
-    opacity: 0.9,
-  },
-  customTabBar: {
-    flexDirection: "row",
-    backgroundColor: "white",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  tabBarItem: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    // opacity: 0.5,
   },
   image: {
     height: 300,
@@ -242,20 +242,5 @@ const styles = StyleSheet.create({
     zIndex: 1,
     alignSelf: "center",
     marginTop: -100,
-  },
-  typeContainer: {
-    backgroundColor: "green",
-    borderRadius: 15,
-    margin: 5,
-    paddingHorizontal: 8,
-    elevation: 5,
-    width: 75,
-    height: 30,
-    justifyContent: "center",
-  },
-  typeText: {
-    color: "#fff",
-    fontSize: 12,
-    alignSelf: "center",
   },
 });

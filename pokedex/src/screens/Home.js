@@ -13,10 +13,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function Home() {
   const [datas, setDatas] = useState([]);
   let [loading, setLoading] = useState(true);
-
+  const baseUrl = "https://pokeapi.co/api/v2/pokemon"
   useEffect(() => {
     //fetch data
-    fetch("https://pokeapi.co/api/v2/pokemon?limit=12")
+    fetch(baseUrl)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not OK");
@@ -40,9 +40,11 @@ export default function Home() {
 
   if (loading) {
     return (
+      <SafeAreaView style={{ flex: 1 }}>
       <View>
         <ActivityIndicator size="large" />
       </View>
+       </SafeAreaView>
     );
   }
 
