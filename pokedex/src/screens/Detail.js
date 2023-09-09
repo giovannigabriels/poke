@@ -25,13 +25,13 @@ export default function Detail({ route }) {
 
   useEffect(() => {
     for (const iterator of stats) {
-      if (iterator.stat.name == "hp") {
+      if (iterator.pokemon_v2_stat.name == "hp") {
         setHp(iterator.base_stat);
-      } else if (iterator.stat.name == "attack") {
+      } else if (iterator.pokemon_v2_stat.name == "attack") {
         setAtk(iterator.base_stat);
-      } else if (iterator.stat.name == "defense") {
+      } else if (iterator.pokemon_v2_stat.name == "defense") {
         setDef(iterator.base_stat);
-      } else if (iterator.stat.name == "special-attack") {
+      } else if (iterator.pokemon_v2_stat.name == "special-attack") {
         setSpAtk(iterator.base_stat);
       } else {
         setSpDef(iterator.base_stat);
@@ -39,7 +39,7 @@ export default function Detail({ route }) {
     }
     const mapAbilities = abilities
       .map((el) => {
-        return capitalizeFirstLetter(el.ability.name);
+        return capitalizeFirstLetter(el.pokemon_v2_ability.name);
       })
       .join(", ");
     setAbilities(mapAbilities);
@@ -61,7 +61,9 @@ export default function Detail({ route }) {
       </View>
       <View style={styles.about}>
         <Text style={styles.titleAbout}>Height</Text>
-        <Text style={styles.valueAbout}>{heightFeet} ({height} m)</Text>
+        <Text style={styles.valueAbout}>
+          {heightFeet} ({height} m)
+        </Text>
       </View>
       <View style={styles.about}>
         <Text style={styles.titleAbout}>Weight</Text>
@@ -205,6 +207,7 @@ export default function Detail({ route }) {
                   backgroundColor: "white",
                   shadowOpacity: 3,
                   width: "auto",
+                  paddingTop: 15,
                 }}
               />
             )}
@@ -257,13 +260,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
     paddingVertical: 30,
-    // opacity: 0.5,
   },
   image: {
-    height: 300,
-    width: 300,
+    height: 275,
+    width: 275,
     zIndex: 1,
     alignSelf: "center",
-    marginTop: -100,
+    marginTop: -50,
   },
 });

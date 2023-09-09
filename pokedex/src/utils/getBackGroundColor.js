@@ -1,6 +1,6 @@
 const backgroundColor = (arr) => {
   if (arr.length > 0) {
-    const typeName = arr[0].type.name;
+    const typeName = arr[0].pokemon_v2_type.name;
     switch (typeName) {
       case "grass":
         return "#48CFB2";

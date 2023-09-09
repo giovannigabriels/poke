@@ -13,10 +13,56 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function Home() {
   const [datas, setDatas] = useState([]);
   let [loading, setLoading] = useState(true);
-  const baseUrl = "https://pokeapi.co/api/v2/pokemon"
   useEffect(() => {
-    //fetch data
-    fetch(baseUrl)
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const endpoint = "https://beta.pokeapi.co/graphql/v1beta";
+    const headers = {
+      "Content-Type": "application/json",
+      "X-Method-Used": "graphiql",
+    };
+    const graphqlQuery = {
+      operationName: "samplePokeAPIquery",
+      query: `query samplePokeAPIquery {
+        pokemon_v2_pokemon(limit: 20) {
+          name
+          id
+          pokemon_v2_pokemontypes(limit: 20) {
+            pokemon_v2_type {
+              name
+            }
+          }
+          pokemon_v2_pokemonstats {
+            base_stat
+            pokemon_v2_stat {
+              name
+            }
+          }
+          height
+          pokemon_v2_pokemonabilities {
+            pokemon_v2_ability {
+              name
+            }
+          }
+          weight
+          pokemon_v2_pokemonsprites {
+            sprites
+          }
+        }
+      }
+      
+      `,
+    };
+
+    const options = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(graphqlQuery),
+    };
+
+    await fetch(endpoint, options)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not OK");
@@ -24,33 +70,26 @@ export default function Home() {
         return response.json();
       })
       .then((data) => {
-        // console.log(data.results);
-        setDatas(data.results);
-      })
-      .catch((error) => {
-        console.error(
-          "There has been a problem with your fetch operation:",
-          error
-        );
+        setDatas(data?.data?.pokemon_v2_pokemon);
       })
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  };
 
   if (loading) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-      <View>
-        <ActivityIndicator size="large" />
-      </View>
-       </SafeAreaView>
+        <View>
+          <ActivityIndicator size="large" />
+        </View>
+      </SafeAreaView>
     );
   }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View>
+      <View style={{ flex: 1 }}>
         <Text style={styles.title}>Pokedex</Text>
         <FlatList
           data={datas}
