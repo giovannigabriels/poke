@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
-import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import * as Animatable from "react-native-animatable";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import Bar from "../components/Bar";
 import RenderTypes from "../components/RenderTypes";
+import { querySpecies } from "../queries/species";
 import capitalizeFirstLetter from "../utils/capitalize";
 import kgToLbs from "../utils/convertKgToLbs";
 import formattedNumber from "../utils/formattedNumber";
+import formattedSpecies from "../utils/formattedSpecies";
 import backgroundColor from "../utils/getBackGroundColor";
 import meterToFeetAndInches from "../utils/meterToFeetAndInch";
 
@@ -22,8 +31,11 @@ export default function Detail({ route }) {
   const [abi, setAbilities] = useState(null);
   const [weightLbs, setWeightLbs] = useState(null);
   const [heightFeet, setHeightFeet] = useState(null);
+  const [species, setSpecies] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    fetchSpecies();
     for (const iterator of stats) {
       if (iterator.pokemon_v2_stat.name == "hp") {
         setHp(iterator.base_stat);
@@ -47,6 +59,40 @@ export default function Detail({ route }) {
     setHeightFeet(meterToFeetAndInches(height));
   }, []);
 
+  const fetchSpecies = async () => {
+    const endpoint = "https://beta.pokeapi.co/graphql/v1beta";
+    const headers = {
+      "Content-Type": "application/json",
+      "X-Method-Used": "graphiql",
+    };
+    const graphqlQuery = {
+      operationName: "MyQuery",
+      query: querySpecies(id),
+    };
+
+    const options = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(graphqlQuery),
+    };
+
+    await fetch(endpoint, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not OK");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setSpecies(
+          formattedSpecies(data?.data?.pokemon_v2_pokemonspeciesname[0]?.genus)
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   const [index, setIndex] = useState(0);
 
   const handleIndexChange = (newIndex) => {
@@ -57,7 +103,7 @@ export default function Detail({ route }) {
     <View style={styles.content}>
       <View style={styles.about}>
         <Text style={styles.titleAbout}>Species</Text>
-        <Text style={styles.valueAbout}>Seed</Text>
+        <Text style={styles.valueAbout}>{species}</Text>
       </View>
       <View style={styles.about}>
         <Text style={styles.titleAbout}>Height</Text>
@@ -143,6 +189,17 @@ export default function Detail({ route }) {
     { key: "evolution", title: "Evolution" },
     { key: "moves", title: "Moves" },
   ];
+
+  if (loading) {
+    return (
+      <SafeAreaView
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <View>
+          <ActivityIndicator size="large" />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

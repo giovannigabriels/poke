@@ -22,7 +22,6 @@ export default function Card({ item }) {
   const [height, setHeight] = useState(null);
 
   useEffect(() => {
-    console.log(item.item.pokemon_v2_pokemontypes, "masuk CARD");
     setTypes(item.item.pokemon_v2_pokemontypes);
     setStats(item.item.pokemon_v2_pokemonstats);
     setAbilities(item.item.pokemon_v2_pokemonabilities);
