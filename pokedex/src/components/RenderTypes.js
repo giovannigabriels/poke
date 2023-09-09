@@ -12,7 +12,7 @@ const RenderTypes = (typesPoke, width, height) => {
         { backgroundColor: backgroundColor(typesPoke), width, height },
       ]}>
       <Text style={styles.typeText}>
-        {capitalizeFirstLetter(type.type.name)}
+        {capitalizeFirstLetter(type.pokemon_v2_type.name)}
       </Text>
     </View>
   ));

@@ -22,28 +22,19 @@ export default function Card({ item }) {
   const [height, setHeight] = useState(null);
 
   useEffect(() => {
-    //fetch data
-    fetch(item.item.url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not OK");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setData(data.sprites.other.home.front_default);
-        setTypes(data.types);
-        setStats(data.stats);
-        setAbilities(data.abilities);
-        setWeight(data.weight / 10);
-        setHeight(data.height / 10);
-      })
-      .catch((error) => {
-        console.error(
-          "There has been a problem with your fetch operation:",
-          error
-        );
-      });
+    console.log(item.item.pokemon_v2_pokemontypes, "masuk CARD");
+    setTypes(item.item.pokemon_v2_pokemontypes);
+    setStats(item.item.pokemon_v2_pokemonstats);
+    setAbilities(item.item.pokemon_v2_pokemonabilities);
+    setHeight(item.item.height / 10);
+    setWeight(item.item.weight / 10);
+    setData(
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/" +
+        JSON.parse(item?.item?.pokemon_v2_pokemonsprites[0]?.sprites)
+          .other?.home?.front_default?.split("/")
+          .slice(2)
+          .join("/")
+    );
   }, []);
 
   const handleCardPress = () => {
@@ -74,11 +65,11 @@ export default function Card({ item }) {
             <View style={styles.typesWrapper}>
               {RenderTypes(typesPoke, 70, 20)}
             </View>
+            <Image
+              source={{ uri: data }}
+              style={styles.image}
+            />
           </View>
-          <Image
-            source={{ uri: data }}
-            style={styles.image}
-          />
         </View>
       </TouchableWithoutFeedback>
     </View>
@@ -87,21 +78,20 @@ export default function Card({ item }) {
 
 const styles = StyleSheet.create({
   cardWrapper: {
-    margin: 5,
+    margin: 6,
   },
   card: {
-    flexDirection: "column",
     height: 120,
-    width: 165,
+    width: 170,
     borderRadius: 15,
   },
   image: {
     flex: 1,
     position: "absolute",
-    right: 2,
+    right: 8,
     bottom: 5,
     height: 80,
-    width: 75,
+    width: 70,
   },
   name: {
     fontWeight: "bold",
