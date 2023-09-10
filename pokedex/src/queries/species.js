@@ -6,3 +6,4 @@ export const querySpecies = (id) => {
         }
       }`;
 };
+export const operationNameSpecies= "MyQuery";

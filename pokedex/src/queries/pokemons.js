@@ -27,3 +27,5 @@ query samplePokeAPIquery {
     }
   }
 `;
+
+export const operationNamePokemon = "samplePokeAPIquery";

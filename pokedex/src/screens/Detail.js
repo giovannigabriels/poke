@@ -12,7 +12,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import Bar from "../components/Bar";
 import RenderTypes from "../components/RenderTypes";
-import { querySpecies } from "../queries/species";
+import fetchData from "../config";
+import { operationNameSpecies, querySpecies } from "../queries/species";
 import capitalizeFirstLetter from "../utils/capitalize";
 import kgToLbs from "../utils/convertKgToLbs";
 import formattedNumber from "../utils/formattedNumber";
@@ -60,37 +61,15 @@ export default function Detail({ route }) {
   }, []);
 
   const fetchSpecies = async () => {
-    const endpoint = "https://beta.pokeapi.co/graphql/v1beta";
-    const headers = {
-      "Content-Type": "application/json",
-      "X-Method-Used": "graphiql",
-    };
-    const graphqlQuery = {
-      operationName: "MyQuery",
-      query: querySpecies(id),
-    };
-
-    const options = {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(graphqlQuery),
-    };
-
-    await fetch(endpoint, options)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not OK");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setSpecies(
-          formattedSpecies(data?.data?.pokemon_v2_pokemonspeciesname[0]?.genus)
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    fetchData(operationNameSpecies, querySpecies(id))
+    .then((data) => {
+      setSpecies(
+        formattedSpecies(data?.data?.pokemon_v2_pokemonspeciesname[0]?.genus)
+      );
+    })
+    .finally(() => {
+      setLoading(false);
+    });
   };
 
   const [index, setIndex] = useState(0);
