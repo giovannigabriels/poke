@@ -4,44 +4,22 @@ import {
   ActivityIndicator,
   StyleSheet,
   Text,
-  ImageBackground,
 } from "react-native";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { queryPokemon } from "../queries/pokemons";
+import { operationNamePokemon, queryPokemon } from "../queries/pokemons";
+import fetchData from "../config";
 
 export default function Home() {
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetchData();
+    fetchDataPokemon();
   }, []);
 
-  const fetchData = async () => {
-    const endpoint = "https://beta.pokeapi.co/graphql/v1beta";
-    const headers = {
-      "Content-Type": "application/json",
-      "X-Method-Used": "graphiql",
-    };
-    const graphqlQuery = {
-      operationName: "samplePokeAPIquery",
-      query: queryPokemon,
-    };
-
-    const options = {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(graphqlQuery),
-    };
-
-    await fetch(endpoint, options)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not OK");
-        }
-        return response.json();
-      })
+  const fetchDataPokemon = async () => {
+    fetchData(operationNamePokemon, queryPokemon)
       .then((data) => {
         setDatas(data?.data?.pokemon_v2_pokemon);
       })
