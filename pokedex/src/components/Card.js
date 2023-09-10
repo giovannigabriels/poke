@@ -7,6 +7,7 @@ import {
   Text,
   StyleSheet,
   TouchableWithoutFeedback,
+  ImageBackground,
 } from "react-native";
 import capitalizeFirstLetter from "../utils/capitalize";
 import backgroundColor from "../utils/getBackGroundColor";
@@ -50,13 +51,19 @@ export default function Card({ item }) {
   };
 
   return (
-    <View style={styles.cardWrapper}>
-      <TouchableWithoutFeedback onPress={handleCardPress}>
-        <View
-          style={[
-            styles.card,
-            { backgroundColor: backgroundColor(typesPoke) },
-          ]}>
+    <TouchableWithoutFeedback onPress={handleCardPress}>
+      <View style={styles.cardWrapper}>
+        <ImageBackground
+          style={[styles.card, { backgroundColor: backgroundColor(typesPoke) }]}
+          source={require("../../assets/pokeball.png")}
+          imageStyle={{
+            width: 100,
+            height: 100,
+            marginLeft: 100,
+            marginTop: 40,
+            opacity: 0.2,
+            tintColor: "white",
+          }}>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>
               {capitalizeFirstLetter(item.item.name)}
@@ -69,9 +76,9 @@ export default function Card({ item }) {
               style={styles.image}
             />
           </View>
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

@@ -62,14 +62,14 @@ export default function Detail({ route }) {
 
   const fetchSpecies = async () => {
     fetchData(operationNameSpecies, querySpecies(id))
-    .then((data) => {
-      setSpecies(
-        formattedSpecies(data?.data?.pokemon_v2_pokemonspeciesname[0]?.genus)
-      );
-    })
-    .finally(() => {
-      setLoading(false);
-    });
+      .then((data) => {
+        setSpecies(
+          formattedSpecies(data?.data?.pokemon_v2_pokemonspeciesname[0]?.genus)
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const [index, setIndex] = useState(0);
@@ -183,11 +183,15 @@ export default function Detail({ route }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
+        source={require("../../assets/pokeball.png")}
         style={{
           backgroundColor: backgroundColor(typesPoke),
           flexDirection: "column",
           flex: 1,
-        }}>
+        }}
+        imageStyle={{width:225,height:225,tintColor:"white", marginLeft:200, marginTop:150, opacity:0.2 }}
+        >
+          
         <View style={{ flex: 1, flexDirection: "column" }}>
           <View
             style={{
@@ -196,6 +200,7 @@ export default function Detail({ route }) {
               justifyContent: "space-between",
               alignItems: "center",
               marginHorizontal: 20,
+              // backgroundColor: "red",
             }}>
             <View style={{ flexDirection: "column" }}>
               <Text style={{ color: "white", marginLeft: 5, fontSize: 45 }}>
@@ -303,5 +308,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     alignSelf: "center",
     marginTop: -50,
+    // marginLeft:50
+    // backgroundColor: "black",
   },
 });
