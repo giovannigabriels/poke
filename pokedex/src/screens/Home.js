@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   Text,
+  ImageBackground,
 } from "react-native";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
@@ -40,7 +41,17 @@ export default function Home() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
+      <ImageBackground style={{ flex: 1 }}
+      source={require("../../assets/pokeball.png")}
+      imageStyle={{
+            width: 250,
+            height: 250,
+            marginLeft: 200,
+            marginTop: -120,
+            opacity: 0.1,
+            tintColor: "gray",
+          }}>
+      
         <Text style={styles.title}>Pokedex</Text>
         <FlatList
           data={datas}
@@ -49,7 +60,7 @@ export default function Home() {
           keyExtractor={(item) => item.id}
           numColumns={2}
         />
-      </View>
+      </ImageBackground>
     </SafeAreaView>
   );
 }
